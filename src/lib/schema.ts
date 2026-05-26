@@ -6,7 +6,7 @@ import { z } from 'zod';
 export const ATTENDEE_TYPES = [
   { id: 'mp',    label: 'สส.',              sub: 'สมาชิกสภาผู้แทนราษฎร' },
   { id: 'staff', label: 'ทีมงาน',           sub: 'ที่ปรึกษาและผู้ประสานงาน' },
-  { id: 'guest', label: 'แขกผู้มีเกียรติ',     sub: 'แขกรับเชิญพิเศษ' },
+  { id: 'guest', label: 'แขกผู้มีเกียรติ',     sub: 'แขกที่ได้รับเชิญจากผู้ประสานงาน' },
 ] as const;
 
 export type AttendeeTypeId = typeof ATTENDEE_TYPES[number]['id'];
