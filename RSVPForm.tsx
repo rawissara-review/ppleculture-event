@@ -5,8 +5,6 @@ import {
   rsvpSchema,
   type RsvpFormData,
   ATTENDEE_TYPES,
-  DIET_OPTIONS,
-  type DietId,
 } from '../lib/schema';
 
 interface Props {
@@ -19,20 +17,16 @@ export function RSVPForm({ full, onSubmit }: Props) {
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors, isSubmitting, touchedFields },
   } = useForm<RsvpFormData>({
     resolver: zodResolver(rsvpSchema),
     mode: 'onBlur',
     defaultValues: {
-      name: '', org: '', phone: '',
+      name: '', org: '', phone: '', diet: '',
       type: undefined as unknown as RsvpFormData['type'],
-      diet: ['none'], dietOther: '',
     },
   });
 
-  const dietSelected = watch('diet') ?? [];
-  const showOther = dietSelected.includes('other');
   const submitLabel = full ? 'ลงชื่อรายการสำรอง' : 'ยืนยันการเข้าร่วม';
 
   const cls = (field: keyof RsvpFormData) =>
@@ -58,7 +52,7 @@ export function RSVPForm({ full, onSubmit }: Props) {
       <div className="field">
         <label className="field__label" htmlFor="org">องค์กร / สังกัด <span className="req">*</span></label>
         <input id="org" type="text"
-               placeholder="เช่น พรรคประชาชน, สื่อมวลชน, ภาคประชาสังคม"
+               placeholder="เช่น บริษัท, สื่อมวลชน, ภาคประชาสังคม"
                autoComplete="off" spellCheck={false}
                className={cls('org')} {...register('org')} />
         {errors.org && <ErrorRow message={errors.org.message!} />}
@@ -102,44 +96,20 @@ export function RSVPForm({ full, onSubmit }: Props) {
         {errors.phone && <ErrorRow message={errors.phone.message!} />}
       </div>
 
-      {/* dietary */}
+      {/* dietary — free text */}
       <div className="field">
-        <label className="field__label">
+        <label className="field__label" htmlFor="diet">
           ข้อจำกัดด้านอาหาร{' '}
           <span style={{ color: 'var(--fg-subtle)', fontSize: 11 }}>(ไม่บังคับ)</span>
         </label>
-        <div className="field__hint">เลือกได้มากกว่าหนึ่งข้อ — ช่วยให้ทางร้านเตรียมอาหารได้เหมาะสม</div>
-        <Controller
-          control={control}
-          name="diet"
-          render={({ field }) => (
-            <div className="check-stack">
-              {DIET_OPTIONS.map((d) => {
-                const active = field.value.includes(d.id);
-                return (
-                  <div key={d.id}
-                       role="checkbox"
-                       tabIndex={0}
-                       aria-checked={active}
-                       className={'check-card ' + (active ? 'is-active' : '')}
-                       onClick={() => toggleDiet(d.id, field.value, field.onChange)}
-                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleDiet(d.id, field.value, field.onChange); } }}>
-                    <div className="check-card__box"><i className="material-icons">check</i></div>
-                    <span className="check-card__label">{d.label}</span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        />
-        {showOther && (
-          <div style={{ marginTop: 8 }}>
-            <input className={cls('dietOther')}
-                   placeholder="โปรดระบุข้อจำกัดของท่าน"
-                   {...register('dietOther')} />
-            {errors.dietOther && <ErrorRow message={errors.dietOther.message!} />}
-          </div>
-        )}
+        <div className="field__hint">
+          เช่น มังสวิรัติ, แพ้อาหารทะเล, แพ้ถั่ว — เว้นว่างได้หากไม่มีข้อจำกัด
+        </div>
+        <textarea id="diet" rows={2}
+                  className={'textarea ' + (touchedFields.diet && errors.diet ? 'is-invalid' : '')}
+                  placeholder="พิมพ์ข้อจำกัดของท่าน (ถ้ามี)"
+                  {...register('diet')} />
+        {errors.diet && <ErrorRow message={errors.diet.message!} />}
       </div>
 
       <div className="submit-row">
@@ -158,17 +128,6 @@ export function RSVPForm({ full, onSubmit }: Props) {
       </div>
     </form>
   );
-}
-
-function toggleDiet(id: DietId, current: DietId[], onChange: (v: DietId[]) => void) {
-  let next: DietId[];
-  if (id === 'none') {
-    next = current.includes('none') ? [] : ['none'];
-  } else {
-    next = current.filter((d) => d !== 'none');
-    next = next.includes(id) ? next.filter((d) => d !== id) : [...next, id];
-  }
-  onChange(next.length === 0 ? ['none'] : next);
 }
 
 function ErrorRow({ message }: { message: string }) {
