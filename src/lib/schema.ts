@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 export const ATTENDEE_TYPES = [
   { id: 'mp',    label: 'สส.',              sub: 'สมาชิกสภาผู้แทนราษฎร' },
-  { id: 'staff', label: 'ทีมงาน',           sub: 'เจ้าหน้าที่และผู้ประสานงาน' },
+  { id: 'staff', label: 'ทีมงาน',           sub: 'ที่ปรึกษาและผู้ประสานงาน' },
   { id: 'guest', label: 'แขกผู้มีเกียรติ',     sub: 'แขกรับเชิญพิเศษ' },
 ] as const;
 
