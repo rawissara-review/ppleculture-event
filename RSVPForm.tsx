@@ -73,17 +73,19 @@ export function RSVPForm({ full, onSubmit }: Props) {
           render={({ field }) => (
             <div className="radio-stack" role="radiogroup">
               {ATTENDEE_TYPES.map((t) => (
-                <label key={t.id}
-                       className={'radio-card ' + (field.value === t.id ? 'is-active' : '')}
-                       onClick={() => field.onChange(t.id)}>
-                  <input type="radio" name="type" value={t.id}
-                         checked={field.value === t.id} readOnly />
+                <div key={t.id}
+                     role="radio"
+                     tabIndex={0}
+                     aria-checked={field.value === t.id}
+                     className={'radio-card ' + (field.value === t.id ? 'is-active' : '')}
+                     onClick={() => field.onChange(t.id)}
+                     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); field.onChange(t.id); } }}>
                   <div className="radio-card__dot" aria-hidden="true" />
                   <div>
                     <div className="radio-card__label">{t.label}</div>
                     <div className="radio-card__sub">{t.sub}</div>
                   </div>
-                </label>
+                </div>
               ))}
             </div>
           )}
@@ -115,13 +117,16 @@ export function RSVPForm({ full, onSubmit }: Props) {
               {DIET_OPTIONS.map((d) => {
                 const active = field.value.includes(d.id);
                 return (
-                  <label key={d.id}
-                         className={'check-card ' + (active ? 'is-active' : '')}
-                         onClick={() => toggleDiet(d.id, field.value, field.onChange)}>
-                    <input type="checkbox" checked={active} readOnly style={{ display: 'none' }} />
+                  <div key={d.id}
+                       role="checkbox"
+                       tabIndex={0}
+                       aria-checked={active}
+                       className={'check-card ' + (active ? 'is-active' : '')}
+                       onClick={() => toggleDiet(d.id, field.value, field.onChange)}
+                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleDiet(d.id, field.value, field.onChange); } }}>
                     <div className="check-card__box"><i className="material-icons">check</i></div>
                     <span className="check-card__label">{d.label}</span>
-                  </label>
+                  </div>
                 );
               })}
             </div>
