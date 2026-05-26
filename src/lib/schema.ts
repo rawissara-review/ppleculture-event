@@ -15,7 +15,7 @@ export type AttendeeTypeId = typeof ATTENDEE_TYPES[number]['id'];
 const phoneRegex = /^(\+?66|0)\d{8,9}$/;
 
 export const rsvpSchema = z.object({
-  name: z.string().trim().min(1, 'กรุณากรอกชื่อ-นามสกุล'),
+  name: z.string().trim().min(1, 'กรุณากรอกชื่อ'),
   org:  z.string().trim().min(1, 'กรุณากรอกองค์กร / สังกัด'),
   type: z.enum(['mp', 'staff', 'guest'], {
     errorMap: () => ({ message: 'กรุณาเลือกประเภทผู้เข้าร่วม' }),
