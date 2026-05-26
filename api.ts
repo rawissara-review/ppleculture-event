@@ -7,7 +7,6 @@ import {
   type SubmitResponse,
   seatCountResponseSchema,
   submitResponseSchema,
-  DIET_OPTIONS,
 } from './schema';
 
 const API_URL = import.meta.env.VITE_RSVP_API_URL;
@@ -17,7 +16,6 @@ if (!API_URL) {
   console.warn('[rsvp] VITE_RSVP_API_URL is not set — see .env.example');
 }
 
-/** Read current seat counts. Cached for 10s client-side. */
 let cache: { at: number; data: SeatCount } | null = null;
 const CACHE_MS = 10_000;
 
@@ -35,16 +33,9 @@ export async function fetchSeatCount(): Promise<SeatCount> {
   return data;
 }
 
-/** Invalidate the seat-count cache (call after a successful submit). */
 export function invalidateSeatCount() { cache = null; }
 
-/** Submit a new RSVP. Server decides Confirmed vs Waitlist based on capacity. */
 export async function submitRsvp(form: RsvpFormData): Promise<SubmitResponse> {
-  const dietLabels = form.diet
-    .map((id) => DIET_OPTIONS.find((d) => d.id === id)?.label)
-    .filter(Boolean)
-    .join(', ');
-
   const body = {
     action: 'submit',
     token:  API_TOKEN || undefined,
@@ -52,11 +43,10 @@ export async function submitRsvp(form: RsvpFormData): Promise<SubmitResponse> {
     org:    form.org,
     type:   form.type,
     phone:  form.phone,
-    diet:   dietLabels,
-    dietOther: form.diet.includes('other') ? form.dietOther ?? '' : '',
+    diet:   (form.diet ?? '').trim() || 'ไม่ระบุ',
+    dietOther: '',
   };
 
-  // Apps Script Web Apps don't honor preflight; send as text/plain to avoid it.
   const res = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
