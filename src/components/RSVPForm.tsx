@@ -52,7 +52,7 @@ export function RSVPForm({ full, onSubmit }: Props) {
       <div className="field">
         <label className="field__label" htmlFor="org">องค์กร / สังกัด <span className="req">*</span></label>
         <input id="org" type="text"
-               placeholder="เช่น บริษัท, พรรค, ภาคประชาสังคม"
+               placeholder="เช่น บริษัท, สื่อ, ภาคประชาสังคม"
                autoComplete="off" spellCheck={false}
                className={cls('org')} {...register('org')} />
         {errors.org && <ErrorRow message={errors.org.message!} />}
