@@ -41,9 +41,9 @@ export function RSVPForm({ full, onSubmit }: Props) {
 
       {/* name */}
       <div className="field">
-        <label className="field__label" htmlFor="name">ชื่อ-นามสกุล <span className="req">*</span></label>
+        <label className="field__label" htmlFor="name">ชื่อของท่าน<span className="req">*</span></label>
         <input id="name" type="text" autoComplete="name"
-               placeholder="กรอกชื่อ-นามสกุล"
+               placeholder="กรอกชื่อ"
                className={cls('name')} {...register('name')} />
         {errors.name && <ErrorRow message={errors.name.message!} />}
       </div>
