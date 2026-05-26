@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/28250489/README.md)
 # People's Culture · Sit-down Dinner RSVP — Production Build
 
 Mobile-first RSVP web app for the People's Culture sit-down dinner. React + Vite + TypeScript, with a Google Sheets backend via Apps Script.
