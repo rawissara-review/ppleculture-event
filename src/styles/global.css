@@ -6,7 +6,7 @@
    Adds: .event-card, .event-card__rows, .event-card__row-icon,
          .info-section, .info-grid, .info-tile,
          .byo, .info-card, .confirm__lede, .confirm__back
-   To verify: open DevTools → Sources → look for this comment.
+   To verify: open DevTools, Sources, look for this comment.
 */
 
 /* =========================================================================
@@ -688,11 +688,12 @@ body {
 .confirm__title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 26px;
+  font-size: 22px;
   line-height: 1.3;
   color: var(--ink-900);
   margin: 10px 0 0;
   letter-spacing: -0.005em;
+  text-wrap: balance;
 }
 .confirm__lede {
   margin: 12px 0 0;
