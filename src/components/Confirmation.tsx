@@ -96,7 +96,7 @@ export function Confirmation({ payload, result, onReset }: Props) {
       <div className="confirm__head">
         <div className="confirm__eyebrow">ยืนยันแล้ว · CONFIRMED</div>
         <h2 className="confirm__title">
-          {firstName ? `สำรองที่นั่งสำเร็จ ขอขอบคุณ คุณ ${firstName}` : 'สำรองที่นั่งเรียบร้อย'}
+          {firstName ? `บันทึกการสำรองที่นั่งเรียบร้อย คุณ ${firstName}` : 'สำรองที่นั่งสำเร็จเรียบร้อย'}
           <br />
           แล้วเจอกันค่ะ
         </h2>
