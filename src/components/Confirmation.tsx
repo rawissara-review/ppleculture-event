@@ -27,78 +27,170 @@ interface Props {
 
 export function Confirmation({ payload, result, onReset }: Props) {
   const isWaitlist = result.status === 'Waitlist';
+  
+  // ตัดชื่อหน้าและจัดการช่องว่างให้ปลอดภัยต่อการนำไปแสดงผล
+  const firstName = (payload.name || '').trim().split(/\s+/)[0];
 
-  return (
-    <section className="confirm">
-      <div className={'confirm__crest ' + (isWaitlist ? 'is-waitlist' : '')}>
-        <i className="material-icons">{isWaitlist ? 'hourglass_top' : 'check_circle'}</i>
-      </div>
-
-      <div className="confirm__head">
-        <div className="confirm__eyebrow">
-          {isWaitlist ? 'รายการสำรอง · WAITLIST' : 'ยืนยันแล้ว · CONFIRMED'}
+  // =========================================================================
+  // 1. CASE: WAITLIST (รายการสำรอง)
+  // =========================================================================
+  if (isWaitlist) {
+    return (
+      <section className="confirm">
+        <div className="confirm__crest is-waitlist">
+          <i className="material-icons">hourglass_top</i>
         </div>
-        <h2 className="confirm__title">
-          {isWaitlist ? 'ได้รับชื่อท่านในรายการสำรองแล้ว' : 'ขอบคุณที่เข้าร่วม แล้วเจอกัน'}
-        </h2>
-      </div>
 
-      <div className="confirm__body">
-        {isWaitlist ? (
-          <>
-            <p>
-              ขอบพระคุณท่าน {payload.name} ที่ตอบรับคำเชิญ
-              ขณะนี้ที่นั่งครบจำนวนแล้ว ทางเราได้บันทึก
-              ชื่อของท่านในรายการสำรองเรียบร้อย
-              {result.position && <> (ลำดับที่ {result.position})</>}
-            </p>
-            <p>
-              หากมีที่นั่งว่าง ทีมงานจะรีบติดต่อท่านกลับโดยเร็วที่สุด
-            </p>
-            <p>
-              หากท่านมีคำถามเพิ่มเติม สามารถติดต่อทีมประสานงาน
-              ของปีกวัฒนธรรมพรรคประชาชนได้ตลอดเวลา
-            </p>
-          </>
-        ) : (
-          <>
-            <p>
-              ขอบคุณที่เข้าร่วม แล้วเจอกันที่ Cute Corner Cuisine
-              พฤหัสบดีที่ 4 มิถุนายน 2569 เวลา 19:00 น.
-            </p>
-            <p>ร้านตั้งอยู่ปากซอยสุขุมวิท 18</p>
-            <p>
-              หากท่านนำรถส่วนตัวมา สามารถจอดได้ที่อาคารคอนโด Citismart
-              ซึ่งอยู่ใกล้ร้าน
-            </p>
-            <p>
-              หากเดินทางโดยรถไฟฟ้า ลงสถานี MRT สุขุมวิท หรือ BTS อโศก
-              เดินออกทางฝั่ง Exchange Tower แล้วเข้าซอยประมาณ 170 เมตร
-            </p>
-            <p>
-              สำหรับเครื่องดื่ม ท่านสามารถนำเครื่องดื่มที่ชื่นชอบ
-              มาร่วมโต๊ะได้ตามอัธยาศัย ทางเราได้จัดเตรียมไว้บางส่วนแล้วเช่นกัน
-            </p>
-          </>
-        )}
-      </div>
+        <div className="confirm__head">
+          <div className="confirm__eyebrow is-waitlist">รายการสำรอง · WAITLIST</div>
+          <h2 className="confirm__title">ได้รับชื่อท่านในรายการสำรองแล้ว</h2>
+          <p className="confirm__lede">
+            ขอบพระคุณ{firstName ? `คุณ ${firstName}` : 'ท่าน'}ที่ตอบรับคำเชิญ ขณะนี้ที่นั่งเต็มจำนวนแล้ว 
+            ทางทีมงานได้บันทึกชื่อของท่านในรายการสำรองเรียบร้อยแล้ว
+            {result.position && <> (ลำดับที่ {result.position})</>}
+          </p>
+        </div>
 
-      <div className="confirm__actions">
-        <div className="confirm__locate">
-          <i className="material-icons">search</i>
-          <div>
-            <div className="confirm__locate-lbl">การเดินทาง</div>
-            <div className="confirm__locate-txt">
-              ค้นหาชื่อร้าน <strong>“Cute Corner Cuisine”</strong> ใน Google Maps
+        <div className="info-card">
+          <div className="info-card__row">
+            <div className="info-card__icon">
+              <i className="material-icons">notifications_active</i>
+            </div>
+            <div className="info-card__body">
+              <div className="info-card__lbl">ขั้นตอนต่อไป</div>
+              <div className="info-card__val">
+                หากมีที่นั่งว่างเพิ่มเติม ทีมงานจะติดต่อกลับไปแจ้งท่านโดยเร็วที่สุด
+              </div>
+            </div>
+          </div>
+          <div className="info-card__row">
+            <div className="info-card__icon">
+              <i className="material-icons">forum</i>
+            </div>
+            <div className="info-card__body">
+              <div className="info-card__lbl">มีคำถามเพิ่มเติม?</div>
+              <div className="info-card__val">
+                สามารถติดต่อทีมประสานงานของปีกวัฒนธรรมพรรคประชาชนได้ตลอดเวลา
+              </div>
             </div>
           </div>
         </div>
-        <a className="btn btn-primary" href={CAL_URL} download="peoples-culture-dinner.ics">
+
+        <div className="confirm__actions">
+          <button className="btn btn-ghost" onClick={onReset}>
+            <i className="material-icons">arrow_back</i>
+            กลับไปหน้าฟอร์ม
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  // =========================================================================
+  // 2. CASE: CONFIRMED (ยืนยันที่นั่งสำเร็จ)
+  // =========================================================================
+  return (
+    <section className="confirm">
+      <div className="confirm__crest">
+        <i className="material-icons">check_circle</i>
+      </div>
+
+      <div className="confirm__head">
+        <div className="confirm__eyebrow">ยืนยันแล้ว · CONFIRMED</div>
+        <h2 className="confirm__title">
+          {firstName ? `ยินดีต้อนรับคุณ ${firstName}` : 'สำรองที่นั่งสำเร็จเรียบร้อย'}
+          <br />
+          แล้วเจอกันที่โต๊ะอาหารค่ำนะครับ/ค่ะ
+        </h2>
+      </div>
+
+      {/* Event detail card */}
+      <div className="event-card">
+        <div className="event-card__venue">
+          <div className="event-card__venue-name">Cute Corner Cuisine</div>
+          <div className="event-card__venue-sub">
+            ปากซอยสุขุมวิท 18 · กรุงเทพมหานคร
+          </div>
+        </div>
+        <div className="event-card__rows">
+          <div className="event-card__row">
+            <div className="event-card__row-icon">
+              <i className="material-icons">event</i>
+            </div>
+            <div>
+              <div className="event-card__row-lbl">วันที่</div>
+              <div className="event-card__row-val">พฤหัสบดี 4 มิถุนายน 2569</div>
+            </div>
+          </div>
+          <div className="event-card__row">
+            <div className="event-card__row-icon">
+              <i className="material-icons">schedule</i>
+            </div>
+            <div>
+              <div className="event-card__row-lbl">เวลา</div>
+              <div className="event-card__row-val">19:00 น. – เที่ยงคืน</div>
+            </div>
+          </div>
+        </div>
+        <a
+          className="btn btn-primary event-card__cta"
+          href={CAL_URL}
+          download="peoples-culture-dinner.ics"
+        >
           <i className="material-icons">event_available</i>
           เพิ่มลงปฏิทิน
         </a>
-        <button className="btn btn-ghost" onClick={onReset}>กลับไปหน้าฟอร์ม</button>
       </div>
+
+      {/* Getting there */}
+      <div className="info-section">
+        <div className="info-section__head">การเดินทาง</div>
+        <div className="info-grid">
+          <div className="info-tile">
+            <div className="info-tile__icon">
+              <i className="material-icons">directions_subway</i>
+            </div>
+            <div className="info-tile__lbl">รถไฟฟ้า</div>
+            <div className="info-tile__val">MRT สุขุมวิท · BTS อโศก</div>
+            <div className="info-tile__hint">
+              ออกฝั่ง Exchange Tower · เดินต่อประมาณ 170 เมตร
+            </div>
+          </div>
+          <div className="info-tile">
+            <div className="info-tile__icon">
+              <i className="material-icons">local_parking</i>
+            </div>
+            <div className="info-tile__lbl">ที่จอดรถ</div>
+            <div className="info-tile__val">Citi Smart Condo</div>
+            <div className="info-tile__hint">พื้นที่จอดรถใกล้ร้านจัดงาน</div>
+          </div>
+        </div>
+        <a
+          className="btn btn-ghost info-section__cta"
+          href="https://maps.app.goo.gl/DbpFQfafd7Mt2LPr9"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i className="material-icons">map</i>
+          เปิดใน Google Maps
+        </a>
+      </div>
+
+      {/* BYO drinks */}
+      <div className="byo">
+        <div className="byo__icon">
+          <i className="material-icons">wine_bar</i>
+        </div>
+        <div className="byo__text">
+          <strong>สามารถนำเครื่องดื่มที่ชื่นชอบมาร่วมโต๊ะได้</strong>
+          <span>ทางทีมงานจัดเตรียมเครื่องดื่มบางส่วนไว้ต้อนรับแล้วเช่นกัน</span>
+        </div>
+      </div>
+
+      <button className="confirm__back" onClick={onReset}>
+        <i className="material-icons">arrow_back</i>
+        กลับไปหน้าฟอร์ม
+      </button>
     </section>
   );
 }
