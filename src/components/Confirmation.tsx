@@ -96,10 +96,11 @@ export function Confirmation({ payload, result, onReset }: Props) {
       <div className="confirm__head">
         <div className="confirm__eyebrow">ยืนยันแล้ว · CONFIRMED</div>
         <h2 className="confirm__title">
-          {firstName ? `บันทึกการสำรองที่นั่งเรียบร้อย คุณ ${firstName}` : 'สำรองที่นั่งสำเร็จเรียบร้อย'}
-          <br />
-          แล้วเจอกันค่ะ
+          แล้วเจอกัน{firstName ? ` คุณ${firstName}` : 'นะคะ'}
         </h2>
+        <p className="confirm__lede">
+          บันทึกการสำรองที่นั่งของท่านเรียบร้อยแล้ว
+        </p>
       </div>
 
       {/* Event detail card */}
@@ -180,8 +181,8 @@ export function Confirmation({ payload, result, onReset }: Props) {
           <i className="material-icons">wine_bar</i>
         </div>
         <div className="byo__text">
-          <strong>สามารถนำเครื่องดื่มที่ชอบมาร่วมโต๊ะได้</strong>
-          <span>ทางทีมงานจัดเตรียมเครื่องดื่มบางส่วนไว้ต้อนรับแล้วบางส่วน</span>
+          <strong>สามารถนำเครื่องดื่มที่ชื่นชอบมาร่วมโต๊ะได้</strong>
+          <span>ทางทีมงานจัดเตรียมเครื่องดื่มบางส่วนไว้ต้อนรับแล้วเช่นกัน</span>
         </div>
       </div>
 
