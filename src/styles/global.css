@@ -521,7 +521,7 @@ body {
   margin-top: 2px;
 }
 .field__error .material-icons { font-size: 14px; }
-.input {
+.input, .textarea {
   font-family: var(--font-body);
   font-size: 16px;  /* 16+ prevents iOS zoom on focus */
   padding: 14px 16px;
@@ -532,12 +532,13 @@ body {
   width: 100%;
   transition: border-color 120ms var(--ease-out), box-shadow 120ms var(--ease-out);
 }
-.input:focus {
+.input:focus, .textarea:focus {
   border-color: var(--orange-500);
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
-.input.is-invalid { border-color: var(--danger); }
-.input.is-invalid:focus { box-shadow: 0 0 0 3px rgba(212,60,47,0.18); }
+.input.is-invalid, .textarea.is-invalid { border-color: var(--danger); }
+.input.is-invalid:focus, .textarea.is-invalid:focus { box-shadow: 0 0 0 3px rgba(212,60,47,0.18); }
+.textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
 /* radio cards */
 .radio-stack { display: flex; flex-direction: column; gap: 10px; }
