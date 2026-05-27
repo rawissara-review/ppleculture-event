@@ -1,4 +1,8 @@
 // rsvp/production/src/components/Confirmation.tsx
+// VERSION: 2026-05-27-confirm-redesign
+// Card-based confirmation screen — uses .event-card, .info-grid, .info-tile,
+// .byo, .info-card classes from global.css. If layout looks broken,
+// verify global.css carries the matching VERSION marker.
 import type { RsvpFormData, SubmitResponse } from '../lib/schema';
 
 // ICS calendar invite, generated client-side
@@ -19,6 +23,8 @@ const ICS = [
 ].join('\r\n');
 const CAL_URL = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ICS);
 
+const MAPS_URL = 'https://maps.app.goo.gl/DbpFQfafd7Mt2LPr9';
+
 interface Props {
   payload: RsvpFormData;
   result: SubmitResponse;
@@ -27,13 +33,8 @@ interface Props {
 
 export function Confirmation({ payload, result, onReset }: Props) {
   const isWaitlist = result.status === 'Waitlist';
-  
-  // ตัดชื่อหน้าและจัดการช่องว่างให้ปลอดภัยต่อการนำไปแสดงผล
   const firstName = (payload.name || '').trim().split(/\s+/)[0];
 
-  // =========================================================================
-  // 1. CASE: WAITLIST (รายการสำรอง)
-  // =========================================================================
   if (isWaitlist) {
     return (
       <section className="confirm">
@@ -45,7 +46,7 @@ export function Confirmation({ payload, result, onReset }: Props) {
           <div className="confirm__eyebrow is-waitlist">รายการสำรอง · WAITLIST</div>
           <h2 className="confirm__title">ได้รับชื่อท่านในรายการสำรองแล้ว</h2>
           <p className="confirm__lede">
-            ขอบพระคุณ{firstName ? `คุณ ${firstName}` : 'ท่าน'}ที่ตอบรับคำเชิญ ขณะนี้ที่นั่งเต็มจำนวนแล้ว 
+            ขอบพระคุณ{firstName ? `คุณ ${firstName}` : 'ท่าน'}ที่ตอบรับคำเชิญ ขณะนี้ที่นั่งเต็มจำนวนแล้ว
             ทางทีมงานได้บันทึกชื่อของท่านในรายการสำรองเรียบร้อยแล้ว
             {result.position && <> (ลำดับที่ {result.position})</>}
           </p>
@@ -86,9 +87,6 @@ export function Confirmation({ payload, result, onReset }: Props) {
     );
   }
 
-  // =========================================================================
-  // 2. CASE: CONFIRMED (ยืนยันที่นั่งสำเร็จ)
-  // =========================================================================
   return (
     <section className="confirm">
       <div className="confirm__crest">
@@ -167,7 +165,7 @@ export function Confirmation({ payload, result, onReset }: Props) {
         </div>
         <a
           className="btn btn-ghost info-section__cta"
-          href="https://maps.app.goo.gl/DbpFQfafd7Mt2LPr9"
+          href={MAPS_URL}
           target="_blank"
           rel="noopener noreferrer"
         >
